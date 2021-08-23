@@ -2,10 +2,10 @@
 
 Implement a map view with an input field + a button that will convert the text in the input into a Marker in the map
 
-- [ ] MapView
-- [ ] Input Field
-- [ ] Button
-- [ ] Markers
+- [x] MapView
+- [x] Input Field
+- [x] Button
+- [x] Markers
 
 ### To run the application
 
