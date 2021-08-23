@@ -1,6 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, TextInput, StyleSheet, Dimensions } from 'react-native';
-import MapView, { LatLng, Marker } from 'react-native-maps';
+import React, {useState} from 'react';
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  Dimensions,
+  Pressable,
+  Text,
+} from 'react-native';
+import MapView, {LatLng, Marker} from 'react-native-maps';
 
 type MarkerData = {
   title: string;
@@ -8,7 +15,7 @@ type MarkerData = {
   longitude: number;
 };
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 export default function App() {
   const [input, setInput] = useState<string>();
@@ -18,7 +25,7 @@ export default function App() {
   const latitude = 11.523987;
   const longitude = 122.696895;
 
-  const onsubmit = () => {
+  const onSubmit = () => {
     if (input) {
       const newMarker: MarkerData = {
         title: input,
@@ -40,12 +47,6 @@ export default function App() {
     setMarkers(newMarkers);
   };
 
-  const lastMarkerRef = useRef<Marker>(null);
-
-  useEffect(() => {
-    lastMarkerRef.current?.showCallout();
-  }, [markers]);
-
   return (
     <View style={styles.container}>
       <MapView
@@ -66,7 +67,6 @@ export default function App() {
               onDragEnd={(e) => {
                 onMarkerDragEnd(e.nativeEvent.coordinate, i);
               }}
-              ref={lastMarkerRef}
               title={details.title}
               coordinate={{
                 latitude: details.latitude,
@@ -82,19 +82,30 @@ export default function App() {
           style={styles.input}
           value={input}
           onChangeText={(text) => setInput(text)}
-          onSubmitEditing={onsubmit}
+          onSubmitEditing={onSubmit}
         />
+        <Pressable onPress={onSubmit} style={styles.button}>
+          <Text>Convert</Text>
+        </Pressable>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  button: {
+    backgroundColor: '#ffd400',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 75,
+    height: 50,
+  },
   container: {
     flex: 1,
     paddingTop: 20,
   },
   content: {
+    flexDirection: 'row',
     borderColor: '#efefef',
     borderWidth: 1,
     width: width - 20,
@@ -103,6 +114,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   input: {
+    flex: 1,
     height: 50,
     backgroundColor: '#ffffff',
     paddingHorizontal: 20,
